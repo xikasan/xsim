@@ -48,8 +48,6 @@ class Filter2nd(BaseModel):
 
         # parameters
         self.A, self.B = self._construct_matrices(tau, gain)
-        # init_val = init_val if init_val is not None else [0.0, 0.0]
-        # init_val = np.asanyarray(init_val) if hasattr(init_val, "__len__") else np.array([init_val, 0.0])
         self.init_val = init_val
 
         # states
