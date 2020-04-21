@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import numpy as np
+from .batch import Batch
 
 
 class Logger:
@@ -33,7 +34,8 @@ class Logger:
         first = (self._counter - size) if self._counter > size else 0
         last  = self._counter
         batch_data = {key: val[first:last] for key, val in self._buf.items()}
-        return batch_data
+        batch = Batch.make(batch_data)
+        return batch
 
     def buffer(self):
         return {key: val[0:self._counter] for key, val in self._buf.items()}
@@ -61,3 +63,30 @@ class Logger:
 
         # add new buffer
         self._buf[key] = np.zeros((size, shape), dtype=self.dtype)
+
+
+class Retriever:
+
+    def __init__(self, source):
+        assert isinstance(source, (dict, Logger)), \
+            "type of data should be dict or xsim.Logger, but {} is given".format(type(source))
+        self._source = source if isinstance(source, dict) else source.buffer()
+        for key, value in self._source.items():
+            self.__setattr__(key, RetrieverData(value))
+
+    def __call__(self, key, idx=None):
+        temp = self._source[key]
+        if idx is not None:
+            return np.squeeze(temp)
+        return np.squeeze(temp[:, idx])
+
+
+class RetrieverData:
+
+    def __init__(self, data):
+        self.data = data
+
+    def __call__(self, idx=None):
+        if idx is None:
+            return np.squeeze(self.data)
+        return np.squeeze(self.data[:, idx])

@@ -1,7 +1,6 @@
 # coding: utf-8
 
 import numpy as np
-from .logger import Logger
 
 
 class Batch:
@@ -16,21 +15,10 @@ class Batch:
         self.__setattr__(key, value)
 
     @staticmethod
-    def make_batch(data):
+    def make(data):
         size = data[list(data.keys())[0]].shape[0]
         batch = Batch(size)
-        print(size)
-
-
-class Retriever:
-
-    def __init__(self, source):
-        assert isinstance(source, [dict, Logger]), \
-            "type of data should be dict or xsim.Logger, but {} is given".format(type(source))
-        self._source = source if isinstance(source, dict) else source.buffer()
-
-    def __call__(self, key, idx=None):
-        temp = self._source[key]
-        if idx is not None:
-            return np.squeeze(temp)
-        return np.squeeze(temp[:, idx])
+        for key, val in data.items():
+            val = np.squeeze(val)
+            batch.append(key, val)
+        return batch
