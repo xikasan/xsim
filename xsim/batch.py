@@ -15,10 +15,11 @@ class Batch:
         self.__setattr__(key, value)
 
     @staticmethod
-    def make(data):
+    def make(data, squeeze=False):
         size = data[list(data.keys())[0]].shape[0]
         batch = Batch(size)
         for key, val in data.items():
-            val = np.squeeze(val)
+            if squeeze:
+                val = np.squeeze(val)
             batch.append(key, val)
         return batch
