@@ -29,7 +29,7 @@ class Filter1st(BaseModel):
     def reset(self, init_val=None):
         init_val = init_val if init_val is not None else self.init_val
         self.x = init_val
-        self.dx = 0
+        self.dx = 0.0
         return self.get_state()
 
     def get_state(self):
