@@ -42,6 +42,11 @@ class BaseModel:
     def __call__(self, action):
         raise NotImplementedError()
 
+    def generate_inf_range(self, size):
+        low = np.array([-np.inf] * size, dtype=self.dtype)
+        high = np.array([np.inf] * size, dtype=self.dtype)
+        return low, high
+
 
 if __name__ == '__main__':
     space = Space(2, -2)
