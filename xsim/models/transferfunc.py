@@ -19,6 +19,10 @@ class TransferFunc1st(BaseModel):
         self.x = self.init_val
         self.dx = 0.0
 
+        # state action space
+        self.act_low, self.act_high = self.generate_inf_range(1)
+        self.obs_low, self.obs_high = self.generate_inf_range(1)
+
     def __call__(self, u):
         fn = lambda x: self.b * u - self.a * x
         self.dx = no_time_rungekutta(fn, self.dt, self.x)
@@ -51,6 +55,10 @@ class TransferFunc2nd(BaseModel):
         # states
         self.x = np.zeros(2, dtype=self.dtype)
         self.dx = np.zeros_like(self.x)
+
+        # state action space
+        self.act_low, self.act_high = self.generate_inf_range(2)
+        self.obs_low, self.obs_high = self.generate_inf_range(2)
 
     def __call__(self, u):
         u = np.asarray(u).astype(self.dtype)

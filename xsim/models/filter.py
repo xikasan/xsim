@@ -8,7 +8,7 @@ from .base import BaseModel
 class Filter1st(BaseModel):
 
     def __init__(self, dt, tau, gain=1, init_val=None, dtype=np.float32, name="Filter1st"):
-        super().__init__(dt, dtype=dtype, name=1)
+        super().__init__(dt, dtype=dtype, name=name)
 
         # parameters
         self.tau = tau
@@ -18,6 +18,10 @@ class Filter1st(BaseModel):
         # states
         self.x = init_val
         self.dx = 0.0
+
+        # state action space
+        self.act_low, self.act_high = self.generate_inf_range(1)
+        self.obs_low, self.obs_high = self.generate_inf_range(1)
 
     def __call__(self, action):
         def fn(x):
@@ -53,6 +57,10 @@ class Filter2nd(BaseModel):
         # states
         self.x = np.zeros(2, dtype=dtype)
         self.dx = np.zeros_like(self.x)
+
+        # state action space
+        self.act_low, self.act_high = self.generate_inf_range(2)
+        self.obs_low, self.obs_high = self.generate_inf_range(2)
 
     def __call__(self, action):
         action = np.asarray(action).astype(self.dtype)
