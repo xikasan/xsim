@@ -8,3 +8,4 @@ from .batch import *
 from . import models
 from .models.base import *
 from .models.filter import *
+from .models.transferfunc import *
