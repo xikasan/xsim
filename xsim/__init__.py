@@ -9,3 +9,4 @@ from . import models
 from .models.base import *
 from .models.filter import *
 from .models.transferfunc import *
+from .models.command import *
