@@ -50,7 +50,7 @@ class TransferFunc2nd(BaseModel):
 
         # parameters
         self.A, self.B, self.C = self._construct_matrices(as_, bs_)
-        self.init_val = init_val
+        self.init_val = init_val if init_val is not None else np.zeros(2)
 
         # states
         self.x = np.zeros(2, dtype=self.dtype)
@@ -71,6 +71,7 @@ class TransferFunc2nd(BaseModel):
         init_val = init_val if init_val is not None else self.init_val
         self.x = init_val
         self.dx = np.zeros_like(init_val)
+        return self.get_state()
 
     def get_state(self):
         return self.x.astype(self.dtype)
@@ -80,6 +81,9 @@ class TransferFunc2nd(BaseModel):
         return xs
 
     def _construct_matrices(self, as_, bs_):
+        bs_ = np.asanyarray(bs_)
+        bs_ = bs_ if len(bs_.shape) == 1 else np.append(np.expand_dims(bs_, axis=0), 0)
+
         A = np.array([
             [0, 1],
             [-as_[1], -as_[0]]

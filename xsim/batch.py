@@ -5,13 +5,11 @@ import numpy as np
 
 class Batch:
 
-    def __init__(self, dtype=np.float32):
-        self.size = None
+    def __init__(self, size, dtype=np.float32):
+        self.size = size
         self.dtype = dtype
 
     def append(self, key, value):
-        if self.size is None:
-            self.size = value.shape[0]
         self.__setattr__(key, value)
 
     @staticmethod
