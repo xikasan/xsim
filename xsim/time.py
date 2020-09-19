@@ -9,4 +9,4 @@ def due_step_range(due, dt):
 
 
 def generate_step_time(due, dt, begin=0):
-    return [xt.round(x, 2) for x in np.arange(begin+dt, due+dt, dt)]
+    return [xt.round(x, 2) for x in np.arange(begin, due+dt, dt)]

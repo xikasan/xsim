@@ -11,7 +11,7 @@ with open('LICENSE') as f:
 
 setup(
     name='xsim',
-    version='0.3.2',
+    version='0.3.3',
     description="xikasan's simulation tool set",
     long_description=readme,
     author='xikasan',
