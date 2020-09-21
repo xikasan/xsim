@@ -4,8 +4,8 @@ from xsim.time import generate_step_time
 
 
 def run():
-    due = 1
-    dt = 0.1
+    due = 40
+    dt = 0.02
 
     for time in generate_step_time(due, dt):
         print(time)
