@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import numpy as np
+import xtools as xt
 
 
 def pulse(time, period, amplitude, bias=None):
@@ -58,11 +59,4 @@ class PoissonRectangularCommand(BaseCommand):
 
     def generate_next(self):
         self.next_time -= np.log(np.random.rand()) / self.rate
-        self.amplitude = self.generate_clipped_normal() * self.max_amplitude
-
-    def generate_clipped_normal(self, max_try=10):
-        for _ in range(max_try):
-            norm = self.dtype(np.random.normal(0, 0.5))
-            if -1 <= norm <= 1:
-                return norm
-        return np.clip(norm, -1, 1)
+        self.amplitude = np.squeeze(xt.bounded_normal() * self.max_amplitude)
