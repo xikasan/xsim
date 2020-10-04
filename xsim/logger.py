@@ -86,7 +86,13 @@ class RetrieverData:
     def __init__(self, data):
         self.data = data
 
-    def __call__(self, idx=None):
+    def __call__(self, idx=None, fn=None):
+        d = self.__retrieve(idx=idx)
+        if fn is None:
+            return d
+        return fn(d)
+
+    def __retrieve(self, idx):
         if idx is None:
             return np.squeeze(self.data)
         return np.squeeze(self.data[:, idx])
