@@ -74,19 +74,16 @@ class Retriever:
         for key, value in self._source.items():
             self.__setattr__(key, RetrieverData(value))
 
-    def __call__(self, key, idx=None):
-        temp = self._source[key]
-        if idx is not None:
-            return np.squeeze(temp)
-        return np.squeeze(temp[:, idx])
-
 
 class RetrieverData:
 
     def __init__(self, data):
-        self.data = data
+        self.data = np.squeeze(data)
 
-    def __call__(self, idx=None):
-        if idx is None:
-            return np.squeeze(self.data)
-        return np.squeeze(self.data[:, idx])
+    def __call__(self, idx=None, fn=None):
+        vals = self.data
+        if idx is not None:
+            vals = np.squeeze(vals[:, idx])
+        if fn is not None:
+            vals = np.array(fn(v) for v in vals)
+        return vals
