@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import numpy as np
+import pandas as pd
 from .batch import Batch
 
 
@@ -79,6 +80,17 @@ class Retriever:
         if idx is not None:
             return np.squeeze(temp)
         return np.squeeze(temp[:, idx])
+
+    def to_dataframe(self):
+        vdict = dict()
+        for key, value in self._source.items():
+            shape = value.shape
+            if shape[1] == 1:
+                vdict[key] = value.squeeze()
+            else:
+                for i in range(shape[1]):
+                    vdict[key+f"_{i}"] = value[:, i].squeeze()
+        return pd.DataFrame(vdict)
 
 
 class RetrieverData:

@@ -1,6 +1,7 @@
 # python dev
 .pyc
 .idea
+.vscode/
 __pycache__/
 
 # mac
