@@ -96,7 +96,7 @@ class Retriever:
 class RetrieverData:
 
     def __init__(self, data):
-        self.data = data
+        self.data = np.squeeze(data)
 
     def __call__(self, idx=None, fn=None):
         d = self.__retrieve(idx=idx)
