@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import numpy as np
+import pandas as pd
 from .batch import Batch
 
 
@@ -74,6 +75,23 @@ class Retriever:
         for key, value in self._source.items():
             self.__setattr__(key, RetrieverData(value))
 
+    def __call__(self, key, idx=None):
+        temp = self._source[key]
+        if idx is not None:
+            return np.squeeze(temp)
+        return np.squeeze(temp[:, idx])
+
+    def to_dataframe(self):
+        vdict = dict()
+        for key, value in self._source.items():
+            shape = value.shape
+            if shape[1] == 1:
+                vdict[key] = value.squeeze()
+            else:
+                for i in range(shape[1]):
+                    vdict[key+f"_{i}"] = value[:, i].squeeze()
+        return pd.DataFrame(vdict)
+
 
 class RetrieverData:
 
@@ -81,9 +99,12 @@ class RetrieverData:
         self.data = np.squeeze(data)
 
     def __call__(self, idx=None, fn=None):
-        vals = self.data
-        if idx is not None:
-            vals = np.squeeze(vals[:, idx])
-        if fn is not None:
-            vals = np.array(fn(v) for v in vals)
-        return vals
+        d = self.__retrieve(idx=idx)
+        if fn is None:
+            return d
+        return fn(d)
+
+    def __retrieve(self, idx):
+        if idx is None:
+            return np.squeeze(self.data)
+        return np.squeeze(self.data[:, idx])

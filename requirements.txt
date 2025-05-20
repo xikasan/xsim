@@ -1,4 +1,5 @@
 numpy
 pyyaml
+pandas
 xtools
 cached-property

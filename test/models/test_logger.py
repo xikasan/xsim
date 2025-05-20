@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import xsim
+import xtools as xt
 
 
 def run():
@@ -15,9 +16,6 @@ def run():
 
     r  = 1.0
     xs = filt.reset()
-    time = 0.0
-    logger.store(time=time, xs=xs).flush()
-    print("time:{:4.2f} xs:{:6.4f}".format(time, xs[0]))
     for time in xsim.generate_step_time(due, dt):
         xs = filt(r)
         logger.store(time=time, xs=xs).flush()
@@ -25,6 +23,7 @@ def run():
 
     result = xsim.Retriever(logger)
     print(result.time())
+    print(result.time(fn=xt.d2r))
 
 
 if __name__ == '__main__':
